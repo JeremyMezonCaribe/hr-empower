@@ -214,7 +214,7 @@ const Sidebar = () => {
           <div className="main-sidebar-header active">
             <Link className="header-logo active" href={`/components/dashboards/dashboard1/`}>
               <img
-                src={`${process.env.NODE_ENV === 'production'? basePath : ''}/assets/img/brand/logo.png`}
+                src={`${process.env.NODE_ENV === 'production'? basePath : ''}/assets/img/logo.png`}
                 className="main-logo  desktop-logo"
                 alt="logo"
               />
@@ -224,7 +224,7 @@ const Sidebar = () => {
                 alt="logo"
               />
               <img
-                src={`${process.env.NODE_ENV === 'production'? basePath : ''}/assets/img/brand/favicon.png`}
+                src={`${process.env.NODE_ENV === 'production'? basePath : ''}/assets/img/favicon.png`}
                 className="main-logo  mobile-logo"
                 alt="logo"
               />

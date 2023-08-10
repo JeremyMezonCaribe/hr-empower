@@ -123,7 +123,7 @@ export default function Header() {
           <div className="responsive-logo">
             <Link href={`/components/dashboards/dashboard1/`} className="header-logo">
               <img
-                src={`${process.env.NODE_ENV === 'production'? basePath : ''}/assets/img/brand/logo.png`}
+                src={`${process.env.NODE_ENV === 'production'? basePath : ''}/assets/img/logo.png`}
                 className="mobile-logo logo-1"
                 alt="logo"
               />
@@ -149,7 +149,7 @@ export default function Header() {
           <div className="logo-horizontal">
             <Link href={`/dashboard/dashboard-1`} className="header-logo">
               <img
-                src={`${process.env.NODE_ENV === 'production'? basePath : ''}/assets/img/brand/logo.png`}
+                src={`${process.env.NODE_ENV === 'production'? basePath : ''}/assets/img/logo.png`}
                 className="mobile-logo logo-1"
                 alt="logo"
               />

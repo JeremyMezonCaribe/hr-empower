@@ -1,32 +1,56 @@
+import PersonIcon from '@mui/icons-material/Person';
+import GroupIcon from '@mui/icons-material/Group';
+import EventIcon from '@mui/icons-material/Event';
+import HomeIcon from '@mui/icons-material/Home';
+
 export const MENUITEMS = [
     {
       menutitle: "Main",
       Items: [
         {
-          title: "Dashboards",
+          title: "Dashboard",
+          path: `/components/dashboards/dashboard1`,
           icon: (
-            <svg
-              xmlns="http://www.w3.org/2000/svg"
-              className="side-menu__icon"
-              width="24"
-              height="24"
-              viewBox="0 0 24 24"
-            >
-              <path d="M3 13h1v7c0 1.103.897 2 2 2h12c1.103 0 2-.897 2-2v-7h1a1 1 0 0 0 .707-1.707l-9-9a.999.999 0 0 0-1.414 0l-9 9A1 1 0 0 0 3 13zm7 7v-5h4v5h-4zm2-15.586 6 6V15l.001 5H16v-5c0-1.103-.897-2-2-2h-4c-1.103 0-2 .897-2 2v5H6v-9.586l6-6z" />
-            </svg>
+            <HomeIcon className='pe-2' />
           ),
-          type: "sub",
+          type: "link",
           selected:false,
           active:false,
-          children: [
-            {
-              path: `/components/dashboards/dashboard1`,
-              type: "link",
-              active:false,
-              selected:false,
-              title: "Dashboard-1",
-            },
-          ],
+          title: "Dashboard",
+        },
+        {
+          title: "Empleados",
+          path: `/empleados`,
+          icon: (
+            <GroupIcon className='pe-2' />
+          ),
+          type: "link",
+          selected:false,
+          active:false,
+          title: "Empleados",
+        },
+        {
+          title: "Calendario",
+          path: "/calendario",
+          icon: (
+            <EventIcon className='pe-2' />
+          ),
+          
+          type: "link",
+          selected:false,
+          active:false,
+          title: "Calendario",
+        },
+        {
+          title: "Usuarios",
+          path: `/usuarios`,
+          icon: (
+            <PersonIcon className='pe-2' />
+          ),
+          type: "link",
+          selected:false,
+          active:false,
+          title: "Usuarios",
         },
       ],
     },
