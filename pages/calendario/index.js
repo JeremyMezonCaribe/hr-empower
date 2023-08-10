@@ -1,6 +1,17 @@
+import Calendar from "@/shared/components/Calendar"
+
 const Calendario = () => {
 
-    return <div></div>
+    return (
+        <section>
+            <div>
+                Header page
+            </div>
+            <div>
+                <Calendar />
+            </div>
+        </section>
+    )
 }
 
 Calendario.layout = "Contentlayout"

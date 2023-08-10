@@ -212,7 +212,7 @@ const Sidebar = () => {
           style={{ position: "absolute" }}
         >
           <div className="main-sidebar-header active">
-            <Link className="header-logo active" href={`/components/dashboards/dashboard1/`}>
+            <Link className="header-logo active" href={`/dashboard`}>
               <img
                 src={`${process.env.NODE_ENV === 'production'? basePath : ''}/assets/img/logo.png`}
                 className="main-logo  desktop-logo"

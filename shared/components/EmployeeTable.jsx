@@ -8,10 +8,11 @@ import TableHead from '@mui/material/TableHead';
 import TableRow from '@mui/material/TableRow';
 import Paper from '@mui/material/Paper';
 import EditButton from './utils/EditButton';
+import { BLUE_COLOR } from '../constants/styledConstants';
 
 const StyledTableCell = styled(TableCell)(({ theme }) => ({
   [`&.${tableCellClasses.head}`]: {
-    backgroundColor: theme.palette.common.black,
+    backgroundColor: BLUE_COLOR,
     color: theme.palette.common.white,
   },
   [`&.${tableCellClasses.body}`]: {

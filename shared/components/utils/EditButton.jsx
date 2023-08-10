@@ -4,7 +4,7 @@ import Button from '@mui/material/Button';
 const EditButton = ({children}) => {
   return (
       <Button 
-        variant="contained"
+        variant="outlined"
 
       >
         {children}
