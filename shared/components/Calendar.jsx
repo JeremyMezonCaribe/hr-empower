@@ -3,13 +3,60 @@ import { Breadcrumb, Card, Col, Row } from "react-bootstrap";
 import FullCalendar from "@fullcalendar/react";
 import dayGridPlugin from "@fullcalendar/daygrid";
 import timeGridPlugin from "@fullcalendar/timegrid";
+import esLocale from "@fullcalendar/core/locales/es";
 import interactionPlugin, { Draggable } from "@fullcalendar/interaction";
 import Seo from "@/shared/layout-components/seo/seo";
 import AddEvent from "./calendar/AddEvent";
+import ComboInput from "./form/ComboInput";
+import { GetAllLicenses } from "@/services/licenciasService";
+import { GetAllVacations } from "@/services/vacacionesService";
+import PrimaryButton from "./utils/PrimaryButton";
+
 export function Calendar() {
   let eventGuid = 0;
 
   const [isOpen, setOpen] = useState(false);
+  const [eventSelected, setEventSelected] = useState("");
+  const [eventData, setEventData] = useState([]);
+
+  useEffect(() => {
+    if (eventSelected == "vacaciones") {
+      GetAllVacations().then((data) => {
+        const vacationsFiltered = data.map((vacations, index) => {
+          return {
+            id: index,
+            title: vacations.Nombre,
+            start: vacations.FechaInicio,
+            end: vacations.FechaFin,
+          };
+        });
+        setEventData(vacationsFiltered);
+      });
+    } else if (eventSelected == "licencias") {
+      GetAllLicenses().then((data) => {
+        const licensesFiltered = data.map((licences, index) => {
+          return {
+            id: index,
+            title: `${licences.Nombre} - ${licences.Comentarios}`,
+            start: licences.FechaInicio,
+            end: licences.FechaFin,
+          };
+        });
+        setEventData(licensesFiltered);
+      });
+    }
+  }, [eventSelected]);
+
+  const eventOptions = [
+    {
+      label: "Vacaciones",
+      value: "vacaciones",
+    },
+    {
+      label: "Licencias",
+      value: "licencias",
+    },
+  ];
 
   let todayStr = new Date().toISOString().replace(/T.*$/, ""); // YYYY-MM-DD of today
   const INITIAL_EVENTS = [
@@ -17,6 +64,7 @@ export function Calendar() {
       id: createEventId(),
       title: "Meeting",
       start: todayStr,
+      end: "2023-08-29",
     },
     {
       id: createEventId(),
@@ -32,7 +80,7 @@ export function Calendar() {
     calendarEvents: [
       {
         title: "Atlanta Monster",
-        start: new Date("2019-04-04 00:00"),
+        start: new Date("2023-08-04 00:00"),
         id: "1001",
       },
       {
@@ -115,7 +163,7 @@ export function Calendar() {
   const handleEvents = (events) => {};
 
   const handleDateSelect = (selectInfo) => {
-    setOpen(true);
+    // setOpen(true);
     console.log("Si");
     // let title = prompt("Please enter a new title for your event");
     // let calendarApi = selectInfo.view.calendar;
@@ -138,19 +186,24 @@ export function Calendar() {
       {/* <!-- breadcrumb --> */}
       <div className="breadcrumb-header justify-content-between">
         <div className="left-content">
-          <span className="main-content-title mg-b-0 mg-b-lg-1">CALENDAR</span>
+          <span className="main-content-title mg-b-0 mg-b-lg-1">
+            Calendario
+          </span>
         </div>
         <div className="justify-content-center mt-2">
           <Breadcrumb className="breadcrumb">
-            <Breadcrumb.Item className="breadcrumb-item tx-15" href="#!">
-              Apps
+            <Breadcrumb.Item
+              className="breadcrumb-item tx-15"
+              href="/dashboard"
+            >
+              Dashboard
             </Breadcrumb.Item>
             <Breadcrumb.Item
               className="breadcrumb-item "
               active
               aria-current="page"
             >
-              Calendar
+              Calendario
             </Breadcrumb.Item>
           </Breadcrumb>
         </div>
@@ -163,31 +216,36 @@ export function Calendar() {
           <Col md={12}>
             <Card>
               <Card.Header>
-                <h3 className="card-title">
-                  Calender With different Color Events
-                </h3>
+                <h3 className="card-title">Los eventos del calendario</h3>
               </Card.Header>
               <Card.Body>
                 <Row>
                   <Col md={12} sm={12} lg={3}>
                     <div id="external-events">
-                      <h4>Draggable Events</h4>
-                      {state.events.map((event) => (
-                        <div
-                          className={`fc-event fc-h-event fc-daygrid-event fc-daygrid-block-event ${event.bg} ${event.border}`}
-                          title={event.title}
-                          data={event.id}
-                          key={event.id}
-                        >
-                          <div className="fc-event-main">{event.title}</div>
-                        </div>
-                      ))}
+                      <ComboInput
+                        label="Tipo de Evento"
+                        placeholder="Seleccione el evento"
+                        options={eventOptions}
+                        onChangeHandler={(e) => {
+                          setEventSelected(e.value);
+                        }}
+                      />
                     </div>
-                    <div></div>
+                    <div>
+                      <PrimaryButton
+                        handlerClick={() => {
+                          setOpen(true);
+                        }}
+                        classname="w-100 mt-4"
+                      >
+                        Agregar Evento
+                      </PrimaryButton>
+                    </div>
                   </Col>
                   <Col md={12} lg={9}>
                     <div id="calendar2">
                       <FullCalendar
+                        locale={esLocale}
                         plugins={[
                           dayGridPlugin,
                           timeGridPlugin,
@@ -204,12 +262,12 @@ export function Calendar() {
                         selectMirror={true}
                         dayMaxEvents={true}
                         weekends={state.weekendsVisible}
-                        initialEvents={INITIAL_EVENTS}
+                        initialEvents={eventData}
+                        events={eventData}
                         select={handleDateSelect}
                         eventContent={renderEventContent}
                         eventClick={handleEventClick}
                         eventsSet={handleEvents}
-                        eve
                       />
                       <AddEvent
                         isOpen={isOpen}
