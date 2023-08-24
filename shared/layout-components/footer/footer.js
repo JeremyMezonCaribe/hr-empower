@@ -1,23 +1,15 @@
-import React from 'react';
-import { Col } from 'react-bootstrap';
+import React from "react";
+import { Col } from "react-bootstrap";
 import Link from "next/link";
 
 export default function Footer() {
-return (
+  return (
     <div className="main-footer">
-    <Col md={12} sm={12} className=" text-center">
+      <Col md={12} sm={12} className=" text-center">
         <div className="container-fluid pt-0 ht-100p">
-          Copyright © 2023{" "}
-          <Link href="#!" className="text-primary">
-            nowa
-          </Link>
-          . Designed with <span className="fa fa-heart text-danger"></span> by
-          <Link href="#!"> Spruko </Link> All rights reserved
+          Copyright © 2023 HR_EMPOWER All rights reserved
         </div>
       </Col>
     </div>
-);}
-
-
-
-
+  );
+}

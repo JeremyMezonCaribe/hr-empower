@@ -5,8 +5,12 @@ import dayGridPlugin from "@fullcalendar/daygrid";
 import timeGridPlugin from "@fullcalendar/timegrid";
 import interactionPlugin, { Draggable } from "@fullcalendar/interaction";
 import Seo from "@/shared/layout-components/seo/seo";
+import AddEvent from "./calendar/AddEvent";
 export function Calendar() {
   let eventGuid = 0;
+
+  const [isOpen, setOpen] = useState(false);
+
   let todayStr = new Date().toISOString().replace(/T.*$/, ""); // YYYY-MM-DD of today
   const INITIAL_EVENTS = [
     {
@@ -100,31 +104,33 @@ export function Calendar() {
     );
   }
   const handleEventClick = (clickInfo) => {
-    if (
-      window.confirm(
-        `Are you sure you want to delete the event '${clickInfo.event.title}'`
-      )
-    ) {
-      clickInfo.event.remove();
-    }
+    // if (
+    //   window.confirm(
+    //     `Are you sure you want to delete the event '${clickInfo.event.title}'`
+    //   )
+    // ) {
+    //   clickInfo.event.remove();
+    // }
   };
   const handleEvents = (events) => {};
 
   const handleDateSelect = (selectInfo) => {
-    let title = prompt("Please enter a new title for your event");
-    let calendarApi = selectInfo.view.calendar;
+    setOpen(true);
+    console.log("Si");
+    // let title = prompt("Please enter a new title for your event");
+    // let calendarApi = selectInfo.view.calendar;
 
-    calendarApi.unselect();
+    // calendarApi.unselect();
 
-    if (title) {
-      calendarApi.addEvent({
-        id: createEventId(),
-        title,
-        start: selectInfo.startStr,
-        end: selectInfo.endStr,
-        allDay: selectInfo.allDay,
-      });
-    }
+    // if (title) {
+    //   calendarApi.addEvent({
+    //     id: createEventId(),
+    //     title,
+    //     start: selectInfo.startStr,
+    //     end: selectInfo.endStr,
+    //     allDay: selectInfo.allDay,
+    //   });
+    // }
   };
   return (
     <div>
@@ -203,6 +209,13 @@ export function Calendar() {
                         eventContent={renderEventContent}
                         eventClick={handleEventClick}
                         eventsSet={handleEvents}
+                        eve
+                      />
+                      <AddEvent
+                        isOpen={isOpen}
+                        handleClose={() => {
+                          setOpen(false);
+                        }}
                       />
                     </div>
                   </Col>
