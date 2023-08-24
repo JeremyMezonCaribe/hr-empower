@@ -90,7 +90,7 @@ License        :   Licensed under ThemeForest License
 /*dark colors*/
 /* ######## FONT ######## */
 @import url("https://fonts.googleapis.com/css2?family=Poppins:wght@100;200;300;400;500;600;700;800;900&display=swap");
-
+@import url('https://fonts.googleapis.com/css2?family=Open+Sans:wght@300;400;500;600;700;800&display=swap');
 /* ######## BOOTSTRAP ######## */
 .accordion>.card:not(:first-of-type) .card-header:first-child {
     border-radius: 0;
@@ -91264,5 +91264,5 @@ a.text-dark:focus {
 /*# sourceMappingURL=style.css.map */
 
 body {
-    font-family: "Poppins" !important;
+    font-family: 'Open Sans', sans-serif !important;
 }

@@ -8,6 +8,7 @@ import { useEffect, useState } from 'react'
 import { useRouter } from 'next/router'
 import Seo from '@/shared/layout-components/seo/seo'
 import { auth } from "../shared/firebase/firebase"
+import { GetAllUsers, GetUserById } from '@/services/usuariosService';
 
 export default function Home() {
 
@@ -21,7 +22,6 @@ export default function Home() {
     }
   }, [])
 
-
   // Firebase
   const [err, setError] = useState("");
   const [data, setData] = useState({
@@ -33,18 +33,37 @@ export default function Home() {
     setData({ ...data, [e.target.name]: e.target.value })
     setError("");
   }
+
   let navigate = useRouter(); 
   const routeChange = () =>{ 
     let path = `/dashboard`; 
     navigate.push(path);
   }
 
-  const Login = (e) => {
-    e.preventDefault();
-    auth.signInWithEmailAndPassword(email, password).then(
-      user => {console.log(user);routeChange()}).catch(err => {console.log(err);setError(err.message)})
+  const Login = async (e) => {
+  
+    let usersData = await GetAllUsers()
+    let user = usersData.filter(userData => userData.NombreUsuario == email);
+
+    console.log("User Data: ",usersData)
+    console.log("User: ",user)
+
+    if(user.length){
+
+      let userInfo = await GetUserById(user[0].ID);
+      console.log("User: ",userInfo)
+
+      if(userInfo.NombreUsuario == email && userInfo.Clave == password) {
+        routeChange();
+      }else{
+        setError("El usuario o clave esta incorrecto");
+      }
+    }else{
+      setError("El usuario o clave esta incorrecto");
+    }
   }
 
+  /*
   const ReactLogin = (e) => {
     console.log(data);
     if (data.email == "adminnextjs@gmail.com" && data.password == "1234567890"){
@@ -58,6 +77,7 @@ export default function Home() {
        })
     }
   }
+  */
 
   const [key, setKey] = useState('nextjs');
   
@@ -74,11 +94,7 @@ export default function Home() {
 
       <div className="page">
         <div
-          className="page-single"
-          
-        >
-
-          
+          className="page-single">
 
           <Tabs className='justify-content-center'
       id="controlled-tab-example"
@@ -123,7 +139,7 @@ export default function Home() {
                                           <Form.Label>Usuario</Form.Label>{" "}
                                           <Form.Control
                                             className="form-control"
-                                            placeholder="Enter your email"
+                                            placeholder="Escribe tu usuario"
                                             type="text"
                                             name='email'
                                             value={email}
@@ -135,7 +151,7 @@ export default function Home() {
                                           <Form.Label>Contraseña</Form.Label>{" "}
                                           <Form.Control
                                             className="form-control"
-                                            placeholder="Enter your password"
+                                            placeholder="Escribe tu contraseña"
                                             type="password"
                                             name='password'
                                             value={password}
@@ -143,7 +159,7 @@ export default function Home() {
                                             required
                                           />
                                         </Form.Group>
-                                        <Button onClick={ReactLogin}
+                                        <Button onClick={Login}
                                           variant=""
                                           className="btn btn-primary btn-block"
                                         >
@@ -162,7 +178,7 @@ export default function Home() {
                           <div className="main-signin-footer text-center mt-3">
                             <p>
                               <Link href="" className="mb-3">
-                                Forgot password?
+                                Olvidaste tu clave?
                               </Link>
                             </p>
                           </div>

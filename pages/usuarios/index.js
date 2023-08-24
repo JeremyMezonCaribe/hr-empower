@@ -1,9 +1,24 @@
+import { GetAllUsers } from "@/services/usuariosService"
 import EmployeeTable from "@/shared/components/EmployeeTable"
+import AddUserModal from "@/shared/components/users/AddUserModal"
+import UserTable from "@/shared/components/UserTable"
+import AddButton from "@/shared/components/utils/AddButton"
 import { PRIMARY_COLOR } from "@/shared/constants/styledConstants"
 import { Button, TextField } from "@mui/material"
+import { useEffect, useState } from "react"
 import { Form } from "react-bootstrap"
 
 const Usuarios = () => {
+
+    const [user,setUser] = useState([])
+
+    useEffect(()=>{
+        GetAllUsers().then(data => {
+            setUser(data)
+        })
+        console.log(user)
+    })
+
 
     return (
         <section>
@@ -12,16 +27,16 @@ const Usuarios = () => {
                 <div className="my-5 d-flex justify-content-between">
                     <div>
                         <Form>
-                            <TextField id="outlined-basic" placeholder="Buscar usuario" label="Buscar" variant="outlined" />
+                            <TextField id="outlined-basic" placeholder="Nombre de usuario" label="Buscar" variant="outlined" />
                         </Form>
                     </div>
                     <div>
-                        <Button sx={{backgroundColor: PRIMARY_COLOR}} variant="contained" >Agregar Usuario</Button>
+                        <AddUserModal />
                     </div>
                 </div>
             </div>
             <div>
-                <EmployeeTable />
+                <UserTable UserData={user} />
             </div>
         </section>
     )

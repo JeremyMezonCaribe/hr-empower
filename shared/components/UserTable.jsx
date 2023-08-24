@@ -46,15 +46,9 @@ const rows = [
   createData('EO-03', "Estik Ogando", "Gerente de Marketing", "estikogando@gmail.com", "")
 ];
 
-const EmployeeTable = ({EmployeeData=[]}) => {
+const UserTable = ({UserData=[]}) => {
 
-  const [employees,setEmployees] = React.useState(EmployeeData)
-
-  React.useEffect(()=>{
-    GetAllEmployees().then(data => {
-      setEmployees(data)
-    })
-  })
+  const [user,setUser] = React.useState(UserData)
 
   return (
     <TableContainer component={Paper}>
@@ -62,21 +56,19 @@ const EmployeeTable = ({EmployeeData=[]}) => {
         <TableHead>
           <TableRow>
             <StyledTableCell>ID</StyledTableCell>
-            <StyledTableCell align="right">Nombre</StyledTableCell>
-            <StyledTableCell align="right">Cargo</StyledTableCell>
-            <StyledTableCell align="right">Telefono</StyledTableCell>
-            <StyledTableCell align="right">Mas</StyledTableCell>
+            <StyledTableCell align="right">Nombre de Usuario</StyledTableCell>
+            <StyledTableCell align="right">Rol de Usuario</StyledTableCell>
+            <StyledTableCell align="right">Editar Usuario</StyledTableCell>
           </TableRow>
         </TableHead>
         <TableBody>
-          {employees.map((row) => (
-            <StyledTableRow key={row?.Cedula}>
+          {UserData.map((row) => (
+            <StyledTableRow key={row.ID}>
               <StyledTableCell component="th" scope="row">
-                {row?.Cedula}
+                {row.ID}
               </StyledTableCell>
-              <StyledTableCell align="right">{row?.Nombre}</StyledTableCell>
+              <StyledTableCell align="right">{row?.NombreUsuario}</StyledTableCell>
               <StyledTableCell align="right">{row?.Descripcion}</StyledTableCell>
-              <StyledTableCell align="right">{row?.Telefono}</StyledTableCell>
               <StyledTableCell align="right">
                 <EditButton>Editar</EditButton>
                 </StyledTableCell>
@@ -88,4 +80,4 @@ const EmployeeTable = ({EmployeeData=[]}) => {
   );
 }
 
-export default EmployeeTable
+export default UserTable
