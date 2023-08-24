@@ -8,14 +8,15 @@ import AddButton from "../utils/AddButton";
 import SecondaryButton from "../utils/SecondaryButton";
 import PrimaryButton from "../utils/PrimaryButton";
 import BaseModal from "../utils/BaseModal";
-import { CreateEmployee } from "@/services/empleadosService";
+import { CreateEmployee, ModifyEmployee } from "@/services/empleadosService";
 import { GetDeparments } from "@/services/departamentosService";
 import { ROL } from "@/shared/constants/auth";
 
-const AddEmployeeModal = ({ employeeParam }) => {
+const EditEmployeeModal = ({ employeeParam }) => {
   const [open, setOpen] = useState(false);
   const [employeeData, setEmployeeData] = useState(
     employeeParam || {
+      ID: 1,
       DepartamentoID: 1,
       TipoDocumentoID: 1,
       Nombre: "",
@@ -33,18 +34,17 @@ const AddEmployeeModal = ({ employeeParam }) => {
 
   const router = useRouter();
 
-  const handleOpen = () => setOpen(true);
-  const handleClose = () => setOpen(false);
-  const handleChange = (value, prop) => {
-    setEmployeeData({ ...employeeData, [prop]: value });
-  };
-
   useEffect(() => {
     const rol = localStorage.getItem("RolUsuario") || "";
     const hasAccess = rol == ROL.administrador;
     setIsAdmin(hasAccess);
   }, []);
 
+  const handleOpen = () => setOpen(true);
+  const handleClose = () => setOpen(false);
+  const handleChange = (value, prop) => {
+    setEmployeeData({ ...employeeData, [prop]: value });
+  };
   const getDepartmentOptions = () => {
     GetDeparments().then((data) => {
       const dataOptions = data.map(({ ID, Descripcion }) => {
@@ -61,7 +61,7 @@ const AddEmployeeModal = ({ employeeParam }) => {
   return (
     <>
       <AddButton disabled={!isAdmin} clickHandler={handleOpen}>
-        Agregar Empleado
+        Modificar
       </AddButton>
       <BaseModal open={open} handleClose={handleClose}>
         <h3 className="font-weight-bold mb-3">Agregar Empleado</h3>
@@ -130,7 +130,7 @@ const AddEmployeeModal = ({ employeeParam }) => {
               <SingleInput
                 label="Sueldo"
                 placeholder="RD$000000"
-                defaultValue={employeeParam?.Sueldo}
+                defaultValue={employeeParam?.Salario}
                 changeHandler={(value) => {
                   handleChange(Number(value), "Salario");
                 }}
@@ -154,11 +154,11 @@ const AddEmployeeModal = ({ employeeParam }) => {
           <SecondaryButton handlerClick={handleClose}>Cancel</SecondaryButton>
           <PrimaryButton
             handlerClick={async () => {
-              const data = await CreateEmployee(employeeData);
+              const data = await ModifyEmployee(employeeData.ID, employeeData);
               handleClose();
             }}
           >
-            Guardar Empleado
+            Modificar Empleado
           </PrimaryButton>
         </div>
       </BaseModal>
@@ -166,4 +166,4 @@ const AddEmployeeModal = ({ employeeParam }) => {
   );
 };
 
-export default AddEmployeeModal;
+export default EditEmployeeModal;

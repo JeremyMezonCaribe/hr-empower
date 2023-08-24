@@ -9,33 +9,35 @@ import SecondaryButton from "../utils/SecondaryButton";
 import PrimaryButton from "../utils/PrimaryButton";
 import BaseModal from "../utils/BaseModal";
 import { CreateEmployee } from "@/services/empleadosService";
-import { CreateUser } from "@/services/usuariosService";
+import { CreateUser, ModifyUser } from "@/services/usuariosService";
 import { GetAllRoles } from "@/services/rolesService";
 import { ROL } from "@/shared/constants/auth";
 
-const AddUserModal = ({ userParam }) => {
+const EditUserModal = ({ userParam }) => {
   const [open, setOpen] = useState(false);
-  const [userData, setUserData] = useState({
-    NombreUsuario: "usuario123",
-    Clave: "contraseña123",
-    RolID: 2,
-  });
+  const [userData, setUserData] = useState(
+    userParam || {
+      NombreUsuario: "usuario123",
+      Clave: "contraseña123",
+      RolID: 2,
+    }
+  );
   const [options, setOptions] = useState([]);
   const [isAdmin, setIsAdmin] = useState(false);
 
   const router = useRouter();
-
-  const handleOpen = () => setOpen(true);
-  const handleClose = () => setOpen(false);
-  const handleChange = (value, prop) => {
-    setUserData({ ...userData, [prop]: value });
-  };
 
   useEffect(() => {
     const rol = localStorage.getItem("RolUsuario") || "";
     const hasAccess = rol == ROL.administrador;
     setIsAdmin(hasAccess);
   }, []);
+
+  const handleOpen = () => setOpen(true);
+  const handleClose = () => setOpen(false);
+  const handleChange = (value, prop) => {
+    setUserData({ ...userData, [prop]: value });
+  };
 
   const getRolOptions = () => {
     GetAllRoles().then((data) => {
@@ -53,10 +55,10 @@ const AddUserModal = ({ userParam }) => {
   return (
     <>
       <AddButton disabled={!isAdmin} clickHandler={handleOpen}>
-        Agregar Usuario
+        Modificar
       </AddButton>
       <BaseModal open={open} handleClose={handleClose}>
-        <h3 className="font-weight-bold mb-3">Agregar Usuario</h3>
+        <h3 className="font-weight-bold mb-3">Modificar Usuario</h3>
         <div>
           <Row>
             <Col className="my-2" xs={12} md={6}>
@@ -73,12 +75,12 @@ const AddUserModal = ({ userParam }) => {
               <ComboInput
                 label="Rol de Usuario"
                 placeholder="Seleccione Rol"
-                defaultValue={{ label: "", value: userParam?.RolID }}
+                defaultValue={{
+                  label: userParam?.Descripcion,
+                  value: userParam?.RolID,
+                }}
                 onFocusHandler={getRolOptions}
                 options={options}
-                onChangeHandler={(value) => {
-                  handleChange(Number(value.value), "RolID");
-                }}
               />
             </Col>
           </Row>
@@ -100,11 +102,11 @@ const AddUserModal = ({ userParam }) => {
           <SecondaryButton handlerClick={handleClose}>Cancelar</SecondaryButton>
           <PrimaryButton
             handlerClick={async () => {
-              const data = await CreateUser(userData);
+              const data = await ModifyUser(userData.ID, userData);
               handleClose();
             }}
           >
-            Guardar Usuario
+            Guardar Cambios
           </PrimaryButton>
         </div>
       </BaseModal>
@@ -112,4 +114,4 @@ const AddUserModal = ({ userParam }) => {
   );
 };
 
-export default AddUserModal;
+export default EditUserModal;

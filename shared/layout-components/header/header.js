@@ -1,14 +1,22 @@
 import React from "react";
-import { Navbar, Dropdown, Button, Form,Col,Row,Modal } from "react-bootstrap";
-import PerfectScrollbar from 'react-perfect-scrollbar';
-import Link from "next/link"
-import { useDispatch, useSelector } from 'react-redux';
-import { Delete } from '../../redux/actions/action';
-import ProductService from '../../services/ProductService';
+import {
+  Navbar,
+  Dropdown,
+  Button,
+  Form,
+  Col,
+  Row,
+  Modal,
+} from "react-bootstrap";
+import PerfectScrollbar from "react-perfect-scrollbar";
+import Link from "next/link";
+import { useDispatch, useSelector } from "react-redux";
+import { Delete } from "../../redux/actions/action";
+import ProductService from "../../services/ProductService";
 import { useRouter } from "next/router";
 
 export default function Header() {
-  let { basePath } = useRouter()
+  let { basePath } = useRouter();
   const [Lang, setLang] = React.useState(false);
   function Fullscreen() {
     if (
@@ -34,7 +42,6 @@ export default function Header() {
       }
     }
   }
-
 
   //leftsidemenu
   const openCloseSidebar = () => {
@@ -63,7 +70,6 @@ export default function Header() {
 
   let getdata = useSelector((state) => state.cartreducer.carts);
 
-  
   const dispatch = useDispatch();
 
   const [anchorEl, setAnchorEl] = React.useState(null);
@@ -72,7 +78,6 @@ export default function Header() {
     setAnchorEl(event.currentTarget);
     // console.log(open)
   };
-
 
   const [Data, setData] = React.useState([]);
 
@@ -83,52 +88,58 @@ export default function Header() {
 
   const compare = () => {
     let comparedata = getdata.filter((e) => {
-      console.log(e, id)
-      return e.id === id
+      console.log(e, id);
+      return e.id === id;
     });
     setData(comparedata);
-  }
-
-  React.useEffect(() => {
-    compare();
-    // eslint-disable-next-line 
-  }, [id])
-  const ondelete = (id) => {
-    dispatch(Delete(id))
-  }
-
-
-  function total () {
-    let price = 0;
-    getdata.map((ele) => {
-      price = ele.price * ele.qnty + price
-      return price;
-    });
-    setPrice(price);
   };
 
   React.useEffect(() => {
-    total(); 
-  })
-  // let navigate = useNavigate(); 
-  let navigate  
-  const routeChange = () =>{ 
-    let path = `/`; 
-    navigate(path);
+    compare();
+    // eslint-disable-next-line
+  }, [id]);
+  const ondelete = (id) => {
+    dispatch(Delete(id));
+  };
+
+  function total() {
+    let price = 0;
+    getdata.map((ele) => {
+      price = ele.price * ele.qnty + price;
+      return price;
+    });
+    setPrice(price);
   }
+
+  React.useEffect(() => {
+    total();
+  });
+  // let navigate = useNavigate();
+  let navigate;
+  const routeChange = () => {
+    let path = `/`;
+    navigate(path);
+  };
   return (
     <Navbar className="main-header side-header sticky nav nav-item">
       <div className="main-container container-fluid">
         <div className="main-header-left ">
           <div className="responsive-logo">
-            <Link href={`/components/dashboards/dashboard1/`} className="header-logo">
+            <Link
+              href={`/components/dashboards/dashboard1/`}
+              className="header-logo"
+            >
               <img
-                src={`${process.env.NODE_ENV === 'production'? basePath : ''}/assets/img/`}
+                src={`${
+                  process.env.NODE_ENV === "production" ? basePath : ""
+                }/assets/img/`}
                 className="mobile-logo logo-1"
                 alt="logo"
               />
               <img
-                src={`${process.env.NODE_ENV === 'production'? basePath : ''}/assets/img/brand/logo-white.png`}
+                src={`${
+                  process.env.NODE_ENV === "production" ? basePath : ""
+                }/assets/img/brand/logo-white.png`}
                 className="mobile-logo dark-logo-1"
                 alt="logo"
               />
@@ -149,18 +160,21 @@ export default function Header() {
           <div className="logo-horizontal">
             <Link href={`/dashboard/dashboard-1`} className="header-logo">
               <img
-                src={`${process.env.NODE_ENV === 'production'? basePath : ''}/assets/img/logo.png`}
+                src={`${
+                  process.env.NODE_ENV === "production" ? basePath : ""
+                }/assets/img/logo.png`}
                 className="mobile-logo logo-1"
                 alt="logo"
               />
               <img
-                src={`${process.env.NODE_ENV === 'production'? basePath : ''}/assets/img/brand/logo-white.png`}
+                src={`${
+                  process.env.NODE_ENV === "production" ? basePath : ""
+                }/assets/img/brand/logo-white.png`}
                 className="mobile-logo dark-logo-1"
                 alt="logo"
               />
             </Link>
           </div>
-          
         </div>
         <div className="main-header-right">
           <Navbar.Toggle
@@ -172,10 +186,6 @@ export default function Header() {
           <div className="mb-0 navbar navbar-expand-lg   navbar-nav-right responsive-navbar navbar-dark p-0">
             <Navbar.Collapse className="collapse" id="navbarSupportedContent-4">
               <ul className="nav nav-item header-icons navbar-nav-right ">
-                
-                
-                
-                
                 <li className="nav-link search-icon d-lg-none d-block">
                   <Form
                     className="navbar-form"
@@ -219,12 +229,13 @@ export default function Header() {
                 <Dropdown className=" main-profile-menu nav nav-item nav-link ps-lg-2">
                   <Dropdown.Toggle
                     className="new nav-link profile-user d-flex"
-                    
                     variant=""
                   >
                     <img
                       alt=""
-                      src={`${process.env.NODE_ENV === 'production'? basePath : ''}/assets/img/faces/2.jpg`}
+                      src={`${
+                        process.env.NODE_ENV === "production" ? basePath : ""
+                      }/assets/img/faces/2.jpg`}
                       className=""
                     />
                   </Dropdown.Toggle>
@@ -234,25 +245,33 @@ export default function Header() {
                         <div className="main-img-user">
                           <img
                             alt=""
-                            src={`${process.env.NODE_ENV === 'production'? basePath : ''}/assets/img/faces/2.jpg`}
+                            src={`${
+                              process.env.NODE_ENV === "production"
+                                ? basePath
+                                : ""
+                            }/assets/img/faces/2.jpg`}
                             className=""
                           />
                         </div>
                         <div className="ms-3 my-auto">
                           <h6 className="tx-15 font-weight-semibold mb-0">
-                            Teri Dactyl
+                            {localStorage.getItem("NombreUsuario") ||
+                              "Administrador"}
                           </h6>
                           <span className="dropdown-title-text subtext op-6  tx-12">
-                            Premium Member
+                            {localStorage.getItem("RolUsuario") || "Admin"}
                           </span>
                         </div>
                       </div>
                     </div>
-                    <Link className="dropdown-item" href={`/components/pages/profile/`}>
+                    <Link
+                      className="dropdown-item"
+                      href={`/components/pages/profile/`}
+                    >
                       <i className="far fa-user-circle"></i>Profile
                     </Link>
-                    
-                    <Link className="dropdown-item" href="/" >
+
+                    <Link className="dropdown-item" href="/">
                       <i className="far fa-arrow-alt-circle-left"></i> Sign Out
                     </Link>
                   </Dropdown.Menu>
@@ -260,7 +279,6 @@ export default function Header() {
               </ul>
             </Navbar.Collapse>
           </div>
-          
         </div>
       </div>
     </Navbar>
