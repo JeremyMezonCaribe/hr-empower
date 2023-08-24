@@ -28,7 +28,7 @@ export default function Home() {
    "email": "adminnextjs@gmail.com",
   "password": "1234567890",
   })
-  const { user, password } = data;
+  const { email, password } = data;
   const changeHandler = (e) => {
     setData({ ...data, [e.target.name]: e.target.value })
     setError("");
@@ -42,17 +42,24 @@ export default function Home() {
 
   const Login = async (e) => {
   
-    let user = usersData.filter(user => user.NombreUsuario = user);
+    let usersData = await GetAllUsers()
+    let user = usersData.filter(userData => userData.NombreUsuario == email);
+
+    console.log("User Data: ",usersData)
+    console.log("User: ",user)
 
     if(user.length){
 
       let userInfo = await GetUserById(user[0].ID);
+      console.log("User: ",userInfo)
 
-      if(userInfo.NombreUsuario == user && userInfo.Clave == password) {
+      if(userInfo.NombreUsuario == email && userInfo.Clave == password) {
         routeChange();
       }else{
         setError("El usuario o clave esta incorrecto");
       }
+    }else{
+      setError("El usuario o clave esta incorrecto");
     }
   }
 
@@ -134,8 +141,8 @@ export default function Home() {
                                             className="form-control"
                                             placeholder="Escribe tu usuario"
                                             type="text"
-                                            name='user'
-                                            value={user}
+                                            name='email'
+                                            value={email}
                                             onChange={changeHandler}
                                             required
                                           />

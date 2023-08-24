@@ -1,16 +1,21 @@
+import { AUTH_API } from '@/shared/constants/auth';
 import axios from 'axios';
+import { GetAuthenticationToken } from './autenticacionService';
 
-export const GetDeparments = () => {
-    const {data} = axios.get(`${process.env.PUBLIC_NEXT_API_HOST}/api/departamentos`);
+export const GetDeparments = async () => {
+    const {token} = await GetAuthenticationToken(AUTH_API)
+    const {data} = await axios.get(`${process.env.NEXT_PUBLIC_API_HOST}/api/departamentos`,{headers:{Authorization: token}});
     return data;
 }
 
-export const GetDepartamentbyId = (id) => {
-    const {data} = axios.get(`${process.env.PUBLIC_NEXT_API_HOST}/api/departamentos/${id}`);
+export const GetDepartamentbyId = async (id) => {
+    const {token} = await GetAuthenticationToken(AUTH_API)
+    const {data} = await axios.get(`${process.env.NEXT_PUBLIC_API_HOST}/api/departamentos/${id}`,{headers:{Authorization: token}});
     return data;
 }
 
-export const CreateDepartament = (departamento) => {
-    const {data} = axios.post(`${process.env.PUBLIC_NEXT_API_HOST}/api/departamentos/`,departamento);
+export const CreateDepartament = async (departamento) => {
+    const {token} = await GetAuthenticationToken(AUTH_API)
+    const {data} = await axios.post(`${process.env.NEXT_PUBLIC_API_HOST}/api/departamentos/`,departamento,{headers:{Authorization: token}});
     return data;
 }
