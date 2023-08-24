@@ -1,26 +1,33 @@
+import { AUTH_API } from '@/shared/constants/auth';
 import axios from 'axios';
+import { GetAuthenticationToken } from './autenticacionService';
 
-export const GetAllUsers = () => {
-    const {data} = axios.get(`${process.env.PUBLIC_NEXT_API_HOST}/api/usuarios`);
+export const GetAllUsers = async () => {
+    const {token} = await GetAuthenticationToken(AUTH_API)
+    const {data} = await axios.get(`${process.env.NEXT_PUBLIC_API_HOST}/api/usuarios`,{headers:{Authorization: token || ""}});
     return data;
 }
 
-export const GetUserById = (id) => {
-    const {data} = axios.get(`${process.env.PUBLIC_NEXT_API_HOST}/api/usuarios/${id}`);
+export const GetUserById = async (id) => {
+    const {token} = await GetAuthenticationToken(AUTH_API)
+    const {data} = await axios.get(`${process.env.NEXT_PUBLIC_API_HOST}/api/usuarios/${id}`,{headers:{Authorization: token || ""}});
     return data;
 }
 
-export const CreateUser = (user) => {
-    const {data} = axios.post(`${process.env.PUBLIC_NEXT_API_HOST}/api/usuarios`,user);
+export const CreateUser =  async(user) => {
+    const {token} = await GetAuthenticationToken(AUTH_API)
+    const {data} = await axios.post(`${process.env.NEXT_PUBLIC_API_HOST}/api/usuarios`,user,{headers:{Authorization: token || ""}});
     return data;
 }
 
-export const ModifyUser = (id,user) => {
-    const {data} = axios.put(`${process.env.PUBLIC_NEXT_API_HOST}/api/usuarios/${id}`,user);
+export const ModifyUser =  async(id,user) => {
+    const {token} = await GetAuthenticationToken(AUTH_API)
+    const {data} = await axios.put(`${process.env.NEXT_PUBLIC_API_HOST}/api/usuarios/${id}`,user,{headers:{Authorization: token || ""}});
     return data;
 }
 
-export const DeleteUser = (id) => {
-    const {data} = axios.delete(`${process.env.PUBLIC_NEXT_API_HOST}/api/usuarios/${id}`);
+export const DeleteUser =  async(id) => {
+    const {token} = await GetAuthenticationToken(AUTH_API)
+    const {data} = await axios.delete(`${process.env.NEXT_PUBLIC_API_HOST}/api/usuarios/${id}`,{headers:{Authorization: token || ""}});
     return data;
 }
